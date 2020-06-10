@@ -10,7 +10,7 @@ Vue.use(VueRouter)
 //路由规则
 const routes = [{
   path: '/login',
-  component: Login
+  component:login
 }]
 
 // 路由实例
