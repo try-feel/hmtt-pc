@@ -24,6 +24,7 @@
 </template>
 
 <script>
+import auth from '@/utils/auth'
 export default {
   // 当时路由来渲染组件，会使用name指定的组件名称，没指定默认是文件的名称
   // Vue.component() components选项注册组件，组件的名字是自己定义和name无关。
@@ -64,8 +65,11 @@ export default {
       this.$refs.loginForm.validate((valid) => {
         if (valid) {
           // 2. 校验成功后进行登录
-          this.$http.post('/authorizations', this.loginForm).then(() => {
+          this.$http.post('/authorizations', this.loginForm).then(res => {
             // 成功
+            // 保存信息 res.data 响应主体 res.data.data 用户信息
+            auth.setUser(res.data.data)
+            // 跳转首页
             this.$router.push('/')
           }).catch(() => {
             // 提示
