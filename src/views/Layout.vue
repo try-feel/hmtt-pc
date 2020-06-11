@@ -1,6 +1,6 @@
 <template>
   <el-container class="layout">
-    <el-aside width="200px">
+    <el-aside :width="isOpen?'200px':'64px'">
       <div class="logo" :class="{logo_mini:!isOpen}"></div>
       <!-- 导航菜单 -->
       <el-menu
@@ -44,9 +44,13 @@
     </el-aside>
     <el-container>
       <el-header>
-        <span @click="toggleAside()" class="el-icon-s-fold icon"></span>
+       <span
+          @click="toggleAside()"
+          class="icon"
+          :class="{'el-icon-s-fold':isOpen,'el-icon-s-unfold':!isOpen}"
+        ></span>
         <span class="text">江苏传智播客科技教育有限公司</span>
-        <el-dropdown class="my-dropdown">
+        <el-dropdown class="my-dropdown" @command="clickItem">
           <span>
             <img class="head" :src="userInfo.photo" alt />
             <span class="name">{{userInfo.name}}</span>
@@ -58,13 +62,17 @@
           </el-dropdown-menu>
         </el-dropdown>
       </el-header>
-      <el-main>Main</el-main>
+      <el-main>
+         <!-- 二级路由显示的位置 -->
+         <router-ciew></router-ciew>
+        
+      </el-main>
     </el-container>
   </el-container>
 </template>
 
 <script>
-import auth from '@/utils/auth'
+import auth from "@/utils/auth";
 export default {
   name: "layout",
   data() {
@@ -72,8 +80,8 @@ export default {
       // 默认展开状态
       isOpen: true,
       userInfo: {
-        photo: '',
-        name: ''
+        photo: "",
+        name: ""
       }
     };
   },
@@ -89,14 +97,14 @@ export default {
     },
     //个人设置
     setting() {
-        this.$router.push('/setting')
+      this.$router.push("/setting");
     },
     // 退出登录
     logout() {
-        //删除本地用户信息
-        auth.delUser()
-        //跳转登录
-        this.$router.push('/login')
+      //删除本地用户信息
+      auth.delUser();
+      //跳转登录
+      this.$router.push("/login");
     }
   }
 };
