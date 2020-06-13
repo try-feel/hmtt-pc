@@ -8,17 +8,29 @@ import auth from '@/utils/auth'
 import Login from '@/views/login'
 import Layout from '@/views/Layout'
 import Welcome from '@/views/welcome'
+import Article from '@/views/article'
 
 Vue.use(VueRouter)
 
 //路由规则
-const routes = [
-  { path: '/login', component: Login },
+const routes = [{
+    path: '/login',
+    component: Login
+  },
   {
     path: '/',
     component: Layout,
     children: [
-      { path: '/', component: Welcome }
+      //欢迎
+      {
+        path: '/',
+        component: Welcome
+      },
+      //内容
+      {
+        path: '/article',
+        component: Article
+      }
     ]
   }
 ]
@@ -29,14 +41,16 @@ const router = new VueRouter({
 })
 
 // 导航守卫
-router.beforeEach((to,from,next) => {
+router.beforeEach((to, from, next) => {
   //结构得到获取用户信息的函数
-  const { getUser } = auth
+  const {
+    getUser
+  } = auth
   // 除去登录外,其他的页面需要判断token是否存在,如果不存储拦截到登录
   if (to.path !== '/login' && !getUser().token) return next('/login')
   // 其他情况一律放行
   next()
-  
+
 })
 
 // 导出实例
